@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Carepoint HMS
 
-## Getting Started
+Carepoint is a Next.js App Router application for the Hospital Management System MVP. It uses TypeScript, Tailwind CSS, Lucide React, and the official MongoDB Node.js driver.
 
-First, run the development server:
+## Local setup
+
+1. Install Node.js 20 or newer and npm.
+2. From the project directory, install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Copy `.env.example` to `.env.local` and set the MongoDB connection string and database name:
+
+   ```env
+   MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/hms?retryWrites=true&w=majority
+   ```
+
+   The database name (`hms`) is part of the URI path. For local MongoDB, use `mongodb://127.0.0.1:27017/hms`. Never commit `.env.local` or expose `MONGODB_URI` through a `NEXT_PUBLIC_` variable.
+
+4. In Atlas, create a database user and allow your development IP in Network Access. For local MongoDB, make sure the MongoDB server is running.
+5. Initialize the collections, validators, and indexes. Use the same full connection string configured in `.env.local` (including the `/hms` database path):
+
+   ```bash
+   mongosh "<MONGODB_URI>" mongodb/setup.js
+   ```
+
+6. Optional: populate the three collections with sample data. This deletes existing documents in those three collections first, so use only a disposable development database:
+
+   ```bash
+   mongosh "<MONGODB_URI>" mongodb/seed.js
+   ```
+
+7. Start the website:
+
+   ```bash
+   npm run dev
+   ```
+
+   Open `http://localhost:3000`.
+
+The app has four routes: `/`, `/doctors`, `/patients`, and `/appointments`. MongoDB access is server-only through the reusable connection in `src/lib/mongodb.ts`. Do not put credentials in client components or browser code.
+
+## Available commands
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## MVP scope
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The current UI is a scaffold with the Carepoint shell and placeholder data views. The connection helper and database initialization scripts are in place for the next implementation phase. Authentication and authorization are not implemented; do not use this version for real patient information or expose it publicly without appropriate security controls.
