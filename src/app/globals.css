@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5f8f8;
+  --foreground: #18313b;
+  --ink: #18313b;
+  --muted: #71838a;
+  --line: #e8eef0;
+  --teal: #168c83;
+  --mint: #e8f6f3;
+  --canvas: #f5f8f8;
+  --blue: #5578c7;
+  --amber: #d38c32;
+  --rose: #c96670;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-teal: var(--teal);
+  --color-mint: var(--mint);
+  --color-canvas: var(--canvas);
+  --color-blue: var(--blue);
+  --color-amber: var(--amber);
+  --color-rose: var(--rose);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-manrope);
+}
+
+* { box-sizing: border-box; }
+html { min-height: 100%; }
+body { min-height: 100vh; margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-dm-sans), Arial, sans-serif; }
+button { cursor: pointer; }
+.font-display { font-family: var(--font-manrope), Arial, sans-serif; }
+.text-muted { color: var(--muted); }
+.text-teal { color: var(--teal); }
+.bg-teal { background-color: var(--teal); }
+.bg-mint { background-color: var(--mint); }
+.bg-canvas { background-color: var(--canvas); }
+.border-line { border-color: var(--line); }
+.panel { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 2px 8px rgb(24 49 59 / 2.5%); }
+.avatar { display: grid; width: 38px; height: 38px; flex: none; place-items: center; border-radius: 12px; font-size: 12px; font-weight: 700; }
+.nav-link.active { background: var(--mint); color: var(--teal); font-weight: 700; }
+.nav-link.active .nav-icon { color: var(--teal); }
+[data-tone="teal"] { background: var(--mint); color: var(--teal); }
+[data-tone="blue"] { background: #edf1fb; color: var(--blue); }
+[data-tone="amber"] { background: #fff4e6; color: var(--amber); }
+[data-tone="rose"] { background: #fdedee; color: var(--rose); }
+
+@media (max-width: 760px) {
+  .sidebar { width: 72px; padding-right: 10px; padding-left: 10px; }
+  .brand-copy, .nav-label, .sidebar-label, .sidebar-note, .profile-copy { display: none; }
+  .nav-link { justify-content: center; padding-right: 0; padding-left: 0; }
+  .main-area { margin-left: 72px; }
+  .content { padding: 20px 16px; }
+  .header { padding-right: 16px; padding-left: 16px; }
+}
