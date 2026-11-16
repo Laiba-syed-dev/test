@@ -1,11 +1,19 @@
 import { CalendarCheck2, CalendarClock, CalendarDays } from "lucide-react";
+import { connection } from "next/server";
+import { Suspense } from "react";
 import { AppointmentForm } from "@/components/appointment-form";
 import { AppointmentsTable } from "@/components/appointments-table";
 import { PageHeading } from "@/components/page-heading";
+import { PageLoading } from "@/components/page-loading";
 import { StatCard } from "@/components/stat-card";
 import { getAppointments, getDoctors, getPatients } from "@/lib/data";
 
-export default async function AppointmentsPage() {
+export default function AppointmentsPage() {
+  return <Suspense fallback={<PageLoading />}><AppointmentsPageContent /></Suspense>;
+}
+
+async function AppointmentsPageContent() {
+  await connection();
   const [appointmentResult, patientResult, doctorResult] = await Promise.allSettled([
     getAppointments(),
     getPatients(),

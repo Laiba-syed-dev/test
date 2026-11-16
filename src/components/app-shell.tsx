@@ -50,12 +50,10 @@ export default function AppShell({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        <div className="sidebar-label mb-3 mt-10 px-3 text-[10px] font-bold uppercase tracking-[.15em] text-[#A2AFB3]">At a glance</div>
+        <div className="sidebar-label mb-3 mt-10 px-3 text-[10px] font-bold uppercase tracking-[.15em] text-[#A2AFB3]">Quick note</div>
         <div className="sidebar-note rounded-xl border border-line bg-canvas p-3.5">
-          <div className="mb-2 text-xs font-semibold">Today’s overview</div>
-          <p className="text-[11px] leading-5 text-muted">Your clinic is ready for the day.</p>
-          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#E1E9E9]"><div className="h-full w-[72%] rounded-full bg-teal" /></div>
-          <div className="mt-2 text-[10px] text-muted">18 of 25 daily slots filled</div>
+          <div className="mb-2 text-xs font-semibold">Carepoint workspace</div>
+          <p className="text-[11px] leading-5 text-muted">Manage your care team, patient records, and appointment schedule.</p>
         </div>
 
         <div className="mt-auto border-t border-line pt-4">

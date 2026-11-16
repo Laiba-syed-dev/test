@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { updateAppointmentStatus } from "@/app/actions";
@@ -13,23 +13,21 @@ const statusStyles: Record<AppointmentStatus, string> = {
 };
 
 export function AppointmentStatusControl({ appointmentId, initialStatus }: { appointmentId: string; initialStatus: AppointmentStatus }) {
-  const [status, setStatus] = useState(initialStatus);
+  const [status, setOptimisticStatus] = useOptimistic(initialStatus, (_current, next: AppointmentStatus) => next);
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
   const router = useRouter();
-
-  useEffect(() => setStatus(initialStatus), [initialStatus]);
 
   function changeStatus(nextStatus: AppointmentStatus) {
     if (nextStatus === status || pending) return;
     setError("");
     startTransition(async () => {
+      setOptimisticStatus(nextStatus);
       const result = await updateAppointmentStatus(appointmentId, nextStatus);
       if (!result.ok) {
         setError(result.error);
         return;
       }
-      setStatus(nextStatus);
       router.refresh();
     });
   }

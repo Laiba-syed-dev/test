@@ -1,5 +1,6 @@
 import "server-only";
 
+import type { Filter } from "mongodb";
 import { getDb } from "@/lib/mongodb";
 import type {
   Appointment,
@@ -40,7 +41,7 @@ export async function getDashboardOverview(): Promise<DashboardOverview> {
   const patientCollection = db.collection<Patient>("patients");
   const doctorCollection = db.collection<Doctor>("doctors");
   const appointmentCollection = db.collection<Appointment>("appointments");
-  const todayFilter = {
+  const todayFilter: Filter<Appointment> = {
     appointment_date: { $gte: start, $lt: end },
     status: { $ne: "Cancelled" },
   };

@@ -9,7 +9,10 @@ import {
   Stethoscope,
   UsersRound,
 } from "lucide-react";
+import { connection } from "next/server";
+import { Suspense } from "react";
 import { PageHeading } from "@/components/page-heading";
+import { PageLoading } from "@/components/page-loading";
 import { StatCard } from "@/components/stat-card";
 import { StatusBadge } from "@/components/status-badge";
 import { getDashboardOverview } from "@/lib/data";
@@ -19,7 +22,12 @@ const numberFormat = new Intl.NumberFormat("en-US");
 const timeFormat = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" });
 const dateFormat = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
+  return <Suspense fallback={<PageLoading dashboard />}><DashboardContent /></Suspense>;
+}
+
+async function DashboardContent() {
+  await connection();
   let overview: DashboardOverview | undefined;
   let loadError = false;
 
@@ -36,7 +44,7 @@ export default async function DashboardPage() {
     <section>
       <PageHeading
         eyebrow={dateFormat.format(new Date())}
-        title={<>Good morning, Alex <span className="text-[23px]" aria-hidden="true">☀️</span></>}
+        title={<>Good morning, Alex <span className="hidden text-[23px] sm:inline" aria-hidden="true">☀️</span></>}
         description="Here’s what’s happening at your hospital today."
         action={<Link href="/appointments" className="flex items-center gap-2 rounded-xl bg-teal px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#11776f]"><Plus className="h-4 w-4" />New appointment</Link>}
       />

@@ -1,11 +1,19 @@
 import { BriefcaseMedical, CircleCheck, Stethoscope } from "lucide-react";
+import { connection } from "next/server";
+import { Suspense } from "react";
 import { DoctorForm } from "@/components/doctor-form";
 import { DoctorsTable } from "@/components/doctors-table";
 import { PageHeading } from "@/components/page-heading";
+import { PageLoading } from "@/components/page-loading";
 import { StatCard } from "@/components/stat-card";
 import { getDoctors } from "@/lib/data";
 
-export default async function DoctorsPage() {
+export default function DoctorsPage() {
+  return <Suspense fallback={<PageLoading />}><DoctorsPageContent /></Suspense>;
+}
+
+async function DoctorsPageContent() {
+  await connection();
   let doctors = await getDoctors().catch((error: unknown) => {
     console.error("Unable to load doctors:", error);
     return null;

@@ -1,11 +1,19 @@
 import { CalendarClock, UserRoundPlus, UsersRound } from "lucide-react";
+import { connection } from "next/server";
+import { Suspense } from "react";
 import { PageHeading } from "@/components/page-heading";
+import { PageLoading } from "@/components/page-loading";
 import { PatientForm } from "@/components/patient-form";
 import { PatientsTable } from "@/components/patients-table";
 import { StatCard } from "@/components/stat-card";
 import { getDashboardSummary, getPatients } from "@/lib/data";
 
-export default async function PatientsPage() {
+export default function PatientsPage() {
+  return <Suspense fallback={<PageLoading />}><PatientsPageContent /></Suspense>;
+}
+
+async function PatientsPageContent() {
+  await connection();
   const [patientResult, summaryResult] = await Promise.allSettled([
     getPatients(),
     getDashboardSummary(),
