@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   Bell,
   CalendarDays,
@@ -25,6 +26,7 @@ const navigation = [
 
 export default function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const [previewRole, setPreviewRole] = useState<"Admin" | "Doctor">("Admin");
   const current = navigation.find((item) => item.href === pathname) ?? navigation[0];
 
   return (
@@ -69,8 +71,14 @@ export default function AppShell({ children }: { children: ReactNode }) {
         <header className="header sticky top-0 z-10 flex h-[70px] items-center justify-between border-b border-line bg-white/95 px-8 backdrop-blur">
           <div className="flex items-center gap-3"><span className="hidden text-xs text-muted sm:inline">Carepoint</span><ChevronRight className="hidden h-3.5 w-3.5 text-[#AAB6B9] sm:block" /><span className="text-sm font-semibold">{current.label}</span></div>
           <div className="flex items-center gap-3">
-            <button type="button" className="mobile-hide hidden items-center gap-2 rounded-lg border border-line bg-white px-2.5 py-1.5 md:flex" aria-label="View role: Admin">
-              <Eye className="h-3.5 w-3.5 text-muted" /><span className="text-[11px] text-muted">View as</span><span className="rounded-md bg-mint px-2 py-1 text-[11px] font-semibold text-teal">Admin</span><ChevronDown className="h-3 w-3 text-muted" />
+            <button
+              type="button"
+              title="Visual preview only; this does not change permissions or data access."
+              onClick={() => setPreviewRole((role) => role === "Admin" ? "Doctor" : "Admin")}
+              className="mobile-hide hidden items-center gap-2 rounded-lg border border-line bg-white px-2.5 py-1.5 md:flex"
+              aria-label={`Switch visual preview role. Current view: ${previewRole}. This does not change permissions.`}
+            >
+              <Eye className="h-3.5 w-3.5 text-muted" /><span className="text-[11px] text-muted">Preview as</span><span className="rounded-md bg-mint px-2 py-1 text-[11px] font-semibold text-teal">{previewRole}</span><ChevronDown className="h-3 w-3 text-muted" />
             </button>
             <button type="button" aria-label="Notifications" className="grid h-9 w-9 place-items-center rounded-lg border border-line text-muted"><Bell className="h-4 w-4" /></button>
             <span className="avatar h-9 w-9 rounded-full bg-[#E7EEF9] text-blue">AM</span>
